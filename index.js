@@ -5,6 +5,9 @@ import flash from 'express-flash';
 import session from 'express-session';
 import pgPromise from 'pg-promise';
 import 'dotenv/config';
+//import route from './routes/route.js';
+import frontEnd from './services/expense_tracker.js'
+import db_queries from './services/db_queries.js';
 
 
 
@@ -12,6 +15,9 @@ const app = express();
 const connectionString = process.env.DATABASE_URL
 const pgp = pgPromise({});
 const db = pgp(connectionString);
+const frontendInstance = frontEnd();
+const backendInstance = db_queries(db)
+//const routeInstance = route(frontendInstance,backendInstance);
 
 
 app.engine('handlebars', engine({
@@ -32,7 +38,7 @@ app.use(express.json());
 
 
 //PORT
-const PORT = process.env.PORT || 2024;
+const PORT = process.env.PORT || 2000;
 app.listen(PORT, (req, res) => {
     console.log('We taking off on port:', PORT)
 });
