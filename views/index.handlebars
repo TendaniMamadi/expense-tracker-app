@@ -1,0 +1,44 @@
+<h1>Expense Tracker</h1>
+
+<form action="/add-expense" method="POST">
+      <label for="expense">Expense:</label>
+        <input type="text" id="expense" name="expense" required>
+
+        <label for="amount">Amount:</label>
+        <input type="number" id="amount" name="amount" required>
+
+        <label>Category:</label>
+        <input type="radio" id="daily" name="category" value="Daily" checked>
+        <label for="category-food">Daily</label>
+
+        <input type="radio" id="Weekly" name="category" value="Weekly">
+        <label for="category-transport">Weekly</label>
+
+        <input type="radio" id="weekday" name="category" value="weekday">
+        <label for="category-housing">Weekday</label>
+
+         <input type="radio" id="once_off" name="category" value="once_off">
+        <label for="category-housing">Once off</label>
+
+         <input type="radio" id="monthly" name="category" value="monthly">
+        <label for="category-housing">Monthly</label>
+
+         <input type="radio" id="weekend" name="category" value="weekend">
+        <label for="category-housing">Weekend</label>    
+
+        <button type="submit">Add Expense</button>
+</form>
+
+<h2>Expense List</h2>
+<ul>
+    {{#each expenses}}
+    <li>{{this.category}}</li>
+    {{/each}}
+</ul>
+
+<h2>Category Totals</h2>
+<ul>
+    {{#each categoryTotals}}
+        <li>{{@key}}: ${{this.toFixed(2)}}</li>
+    {{/each}}
+</ul>
