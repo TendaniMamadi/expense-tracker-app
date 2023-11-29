@@ -37,19 +37,51 @@ app.use(bodyParser.json());
 app.use(express.json());
 
 
-app.get('/', (req, res) => {
-    res.render('index', { expenses });
+// Route to display homepage
+
+app.get('/',routeInstance.homeRoute)
+
+// Route to add an expense
+app.post('/add-expense',routeInstance.addExpenseRoute);
+
+// Route to get all expenses
+app.get('/all-expenses', (req, res) => {
+    // Call the allExpenses function
+    const expenses = routeInstance.allExpenses();
+
+    // Return the expenses as JSON
+    res.json(expenses);
 });
 
-// Handle the form submission to add expenses
-app.post('/add-expense', (req, res) => {
-    const { expense, amount } = req.body;
+// Route to get expenses for a specific category
+app.get('/expenses-for-category/:categoryId', (req, res) => {
+    const categoryId = parseInt(req.params.categoryId);
 
-    // Add the new expense to the expenses array
-    expenses.push(`${expense}: $${amount}`);
+    // Call the expensesForCategory function
+    const categoryExpenses = routeInstance.expenseForCategory(categoryId);
 
-    // Redirect back to the main page
-    res.redirect('/');
+    // Return the expenses for the category as JSON
+    res.json(categoryExpenses);
+});
+
+// Route to delete an expense
+app.delete('/delete-expense/:expenseId', (req, res) => {
+    const expenseId = parseInt(req.params.expenseId);
+
+    // Call the deleteExpense function
+    routeInstance.deleteExpense(expenseId);
+
+    // Return a success message or status
+    res.sendStatus(204); // No content
+});
+
+// Route to get category totals
+app.get('/category-totals', (req, res) => {
+    // Call the categoryTotals function
+    const totals = routeInstance.categoryTotals();
+
+    // Return the category totals as JSON
+    res.json(totals);
 });
 
 //PORT

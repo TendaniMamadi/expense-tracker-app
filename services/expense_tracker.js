@@ -1,85 +1,62 @@
 export default function expense_tracker() {
-
     // In-memory storage for expenses
     const expenses = [];
 
-    async function addExpense(categoryId, amount, description) {
-        // Pseudocode:
+    function addExpense(categoryId, amount, description) {
         // Create a new expense object with the provided data.
         const newExpense = {
-            id: expenses.length + 1, // Generate a simple ID
+            id: expenses.length + 1,
             categoryId,
             amount,
-            description
+            description,
         };
 
-        //Add the expense object to the expenses array.
+        // Add the expense object to the expenses array.
         expenses.push(newExpense);
 
-        //Return a success message or the updated list of expenses.
-        return {
-            success: true,
-            message: 'Expense added successfully',
-            expense: newExpense
-        };
-    }
-
-    async function allExpenses() {
-        // Pseudocode:
-        //Return the entire list of expenses.
+        // Return the updated list of expenses.
         return expenses;
     }
 
-    async function expenseForCategory(categoryId) {
-        // Pseudocode:
-        //Filter the expenses array based on the provided categoryId.
-        const expensesForCategory = expenses.filter(expense => expense.categoryId === categoryId);
-
-        //Return the list of expenses for the specified category.
-        return expensesForCategory;
+    function allExpenses() {
+        // Return the entire list of expenses.
+        return expenses;
     }
 
-    async function deleteExpense(expenseId) {
-        // Pseudocode:
-        //Find the expense with the given expenseId in the expenses array.
-        const index = expenses.findIndex(expense => expense.id === expenseId);
+    function expenseForCategory(categoryId) {
+        // Filter the expenses array based on the provided categoryId.
+        const filteredExpenses = expenses.filter(expense => expense.categoryId === categoryId);
 
-        //Remove the expense from the array if found.
-        if (index !== -1) {
-            const deletedExpense = expenses.splice(index, 1)[0];
-            //Return a success message or the updated list of expenses.
-            return {
-                success: true,
-                message: 'Expense deleted successfully',
-                expense: deletedExpense
-            };
-        } else {
-            // Return an error message if the expense with the given ID is not found.
-            return {
-                success: false,
-                message: 'Expense not found',
-                expense: null
-            };
+        // Return the list of expenses for the specified category.
+        return filteredExpenses;
+    }
+
+    function deleteExpense(expenseId) {
+        // Find the index of the expense with the given expenseId in the expenses array.
+        const indexToDelete = expenses.findIndex(expense => expense.id === expenseId);
+
+        // If the expense is found, remove it from the array.
+        if (indexToDelete !== -1) {
+            expenses.splice(indexToDelete, 1);
         }
+
+        // Return the updated list of expenses.
+        return expenses;
     }
 
-    async function categoryTotals() {
-        // Pseudocode:
-        //Create an object to store category totals.
-        const categoryTotals = {};
+    function categoryTotals() {
+        // Create an object to store category totals.
+        const categoryTotal = {};
 
-        //Iterate through the expenses array.
+        // Iterate through the expenses array.
         expenses.forEach(expense => {
-            //For each expense, update the corresponding category total.
-            if (!categoryTotals[expense.categoryId]) {
-                categoryTotals[expense.categoryId] = 0;
-            }
-
-            categoryTotals[expense.categoryId] += expense.amount;
+            // For each expense, update the corresponding category total.
+            const categoryId = expense.categoryId;
+            categoryTotal[categoryId] = (categoryTotal[categoryId] || 0) + expense.amount;
         });
 
-        //Return the object with category totals.
-        return categoryTotals;
+        // Return the object with category totals.
+        return categoryTotal;
     }
 
     return {
